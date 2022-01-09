@@ -18,9 +18,11 @@ const App: FC = () => {
 
   const addTask = (): void => {
     const newTask = { taskName: task, deadLine: deadLine };
-    setTodoList([...todoList, newTask]);
-    setTask("");
-    setDeadLine(0);
+    if (task) {
+      setTodoList([...todoList, newTask]);
+      setTask("");
+      setDeadLine(0);
+    }
   };
 
   const completeTask = (taskNameToDelete: string): void => {
@@ -31,25 +33,34 @@ const App: FC = () => {
     );
   };
 
-function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header">
+        <div className="inputContainer">
+          <input
+            type="text"
+            placeholder="Task..."
+            name="task"
+            value={task}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            placeholder="DeadLine (in Days)..."
+            name="deadLine"
+            value={deadLine}
+            onChange={handleChange}
+          />
+        </div>
+        <button onClick={addTask}>Add Task</button>
+      </div>
+      <div className="todoList">
+        {todoList.map((task: ITask, key: number) => {
+          return <TodoTask key={key} task={task} completeTask={completeTask} />;
+        })}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
